@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:humoji_app/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignupScreen()),
+        MaterialPageRoute(builder: (context) => LoginScreen()),
       );
     });
   }
@@ -39,12 +40,16 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/Humoji logo.png', // Fixed typo: '.pg' → '.png'
-                    width: 200,
-                    height: 200,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16), // 👈 soft corners
+                    child: Image.asset(
+                      'assets/Humoji logo.png',
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  const SizedBox(height: 20), // Space between logo and tagline
+                  const SizedBox(height: 20),
                   const Text(
                     'Emoji in.Music out',
                     style: TextStyle(
@@ -60,19 +65,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Welcome to Signup Screen!', style: TextStyle(fontSize: 24)),
-      ),
     );
   }
 }
