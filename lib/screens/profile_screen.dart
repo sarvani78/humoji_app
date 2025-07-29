@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Stack(alignment: Alignment.bottomRight,
                   children: [
                     CircleAvatar(radius: 40, backgroundColor: Colors.transparent,
-                    foregroundImage:AssetImage('assets/pf_image3.jpg'), ),
+                    foregroundImage:AssetImage('assets/'), ),
                      CircleAvatar(
                       radius: 16,
                       backgroundColor: Colors.white,
