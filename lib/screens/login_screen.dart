@@ -180,7 +180,6 @@ class _SignupState extends State<Signup> {
 
       await saveUser(emailOrPhone, password);
 
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Account created! You can login now.")),
       );
