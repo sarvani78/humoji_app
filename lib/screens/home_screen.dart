@@ -22,7 +22,7 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
   String? _currentlyPlayingPath;
 
   final List<String> loveEmojis = ['❤','🩷','🧡','💛','💚','💙','🩵','💜','🤎','🖤','🩶','🤍','❤‍🔥','❣','💕','💞','💗','💖','💘','💝','💟','💌','😍','😘','🥰','🤩','😗','😙','🤩','🤗','🫠','🫣','🙈','😽','😻','🫀','🫦','🫶','🫰','🎀','💋','♥','🌹','🌸','🏵','🌺','🌻','🌼','🌷'];
-  final List<String> sadEmojis = ['🥲','😔','☹','🥺','🥹','😥','😢','😖','😓','😿','😾','🙍‍♀','🙎‍♂','🙎‍♀','🥀','😭','🙎','💔'];
+  final List<String> sadEmojis = ['🥲','😔','☹','🥺','🥹','😥','😢','😖','😓','😿','😾','🙍‍♀','🙎‍♂','🙎‍♀','🥀','😭','🙎','❤️‍🩹','💔'];
   final List<String> happyEmojis = ['😀','😁','😃','😄','😆','😉','😊','😎','😋','☺','🙂','😛','😜','😝','🤪','😇','🤭','🫣','😹','😸','😺'];
   final List<String> retroEmojis = ['🎥','🎞','📽','🎬','📼','🎦'];
   final List<String> itemEmojis = ['💃','🕺','🪩','🪭','🩰','👯','👯‍♂','👯‍♀'];
@@ -70,37 +70,37 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
   final List<Map<String, String>> sadSongs = [
     {
       'title': 'Chana Mereya',
-      'subtitle': 'Artist X',
+      'subtitle': ' ',
       'path': 'assets/Channamereya.mp3',
     },
         {
       'title': 'Agar Tum Saath Ho',
-      'subtitle': 'Artist X',
+      'subtitle': ' ',
       'path': 'assets/agartumsaathho.mp3',
     },
       {
       'title': 'Abhi Na Jao Chod',
-      'subtitle': 'Artist X',
+      'subtitle': ' ',
       'path': 'assets/abhinajao.mp3',
     },
         {
       'title': 'HamariAdhuriKahani',
-      'subtitle': 'Artist X',
+      'subtitle': '',
       'path': 'assets/HamariAdhuriKahani.mp3',
     },
         {
       'title': 'Satranga',
-      'subtitle': 'Artist X',
+      'subtitle': ' ',
       'path': 'assets/Satranga.mp3',
     },
         {
       'title': 'Shayad',
-      'subtitle': 'Artist X',
+      'subtitle': ' ',
       'path': 'assets/Shayad.mp3',
     },
         {
       'title': 'Tum Hi Ho',
-      'subtitle': 'Artist X',
+      'subtitle': ' ',
       'path': 'assets/Tum Hi Ho.mp3',
     },
       
