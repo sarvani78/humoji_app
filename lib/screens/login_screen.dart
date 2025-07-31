@@ -28,12 +28,16 @@ class _LoginScreenState extends State<LoginScreen> {
     bool isValid = await validateUser(emailOrPhone, password);
 
     if (isValid) {
-      Navigator.push(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (_) => LanguageSelectionScreen(userName: _loginEmailController.text)),
-      );
-    } else {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('loggedInUserEmail', emailOrPhone); // this is used for updating password
+
+  Navigator.push(
+    // ignore: use_build_context_synchronously
+    context,
+    MaterialPageRoute(builder: (_) => LanguageSelectionScreen(userName: _loginEmailController.text)),
+  );
+}
+ else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Invalid credentials. Please sign up first.")),
@@ -168,18 +172,22 @@ class _SignupState extends State<Signup> {
 
   final bool _showLoginButton = false;
 
-  Future<void> saveUser(String email, String password) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(email, password);
-  }
+  Future<void> saveUser(String name, String email, String password) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(email, password); // existing
+  await prefs.setString('loggedInUserName', name); // new
+  await prefs.setString('loggedInUserEmail', email); // new
+}
+
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final emailOrPhone = _emailController.text.trim();
       final password = _passwordController.text;
 
-      await saveUser(emailOrPhone, password);
+      await saveUser(_nameController.text.trim(), emailOrPhone, password);
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Account created! You can login now.")),
       );

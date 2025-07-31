@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:humoji_app/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -8,9 +9,26 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String userName = '';
+  String userEmail = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserDetails();
+  }
+
+  Future<void> _loadUserDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('loggedInUserName') ?? 'User';
+      userEmail = prefs.getString('loggedInUserEmail') ?? '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack( 
+    return Stack(
       children: [
         Container(
           decoration: BoxDecoration(
@@ -38,11 +56,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Stack(alignment: Alignment.bottomRight,
+                Stack(
+                  alignment: Alignment.bottomRight,
                   children: [
-                    CircleAvatar(radius: 40, backgroundColor: Colors.transparent,
-                    foregroundImage:AssetImage('assets/'), ),
-                     CircleAvatar(
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.transparent,
+                      foregroundImage: AssetImage('assets/profile.jpg'),
+                    ),
+                    CircleAvatar(
                       radius: 16,
                       backgroundColor: Colors.white,
                       child: Icon(
@@ -55,13 +77,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'UserName',
+                  userName,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  userEmail,
+                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
                 Divider(height: 40),
                 ListTile(
                   leading: Icon(Icons.person),
-                  title: Text('Profile Settings',style:TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text('Profile Settings',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Update and modify your profile'),
                   onTap: () => Navigator.push(
                     context,
@@ -72,7 +99,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTile(
                   leading: Icon(Icons.lock),
-                  title: Text('Privacy',style:TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text('Privacy',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Change your password'),
                   onTap: () => Navigator.push(
                     context,
@@ -81,7 +109,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTile(
                   leading: Icon(Icons.settings),
-                  title: Text('Settings',style:TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text('Settings',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Personalize preferences'),
                   onTap: () => Navigator.push(
                     context,
@@ -90,7 +119,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTile(
                   leading: Icon(Icons.info),
-                  title: Text('About Us',style:TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text('About Us',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Know more about our team'),
                   onTap: () => Navigator.push(
                     context,
@@ -98,12 +128,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                ElevatedButton.icon(style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  
-                ),
-                  onPressed: () {},
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.clear();
+                   Navigator.pushAndRemoveUntil(
+                     // ignore: use_build_context_synchronously
+                     context,
+                         MaterialPageRoute(builder: (context) => const LoginScreen()),
+                       (Route<dynamic> route) => false,
+                      );
+ 
+                  },
                   icon: Icon(Icons.logout),
                   label: Text('Logout'),
                 ),
@@ -198,8 +238,52 @@ class ResetPassScreen extends StatelessWidget {
   }
 }
 
-class PrivacyScreen extends StatelessWidget {
+
+// import 'package:flutter/material.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'reset_pass_screen.dart'; // Make sure this file exists
+
+class PrivacyScreen extends StatefulWidget {
   const PrivacyScreen({super.key});
+
+  @override
+  State<PrivacyScreen> createState() => _PrivacyScreenState();
+}
+
+class _PrivacyScreenState extends State<PrivacyScreen> {
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  Future<void> _saveNewPassword() async {
+    final newPassword = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
+
+    if (newPassword.isEmpty || confirmPassword.isEmpty) {
+      _showMessage('Please fill in all fields');
+      return;
+    }
+
+    if (newPassword != confirmPassword) {
+      _showMessage('Passwords do not match');
+      return;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('loggedInUserEmail');
+
+    if (email != null) {
+      await prefs.setString(email, newPassword); // Save new password for the email
+      _showMessage('Password updated successfully');
+    } else {
+      _showMessage('User email not found. Please log in again.');
+    }
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,58 +307,19 @@ class PrivacyScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image(
-              image: AssetImage('assets/background.jpg'),
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
           ),
           Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.transparent,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(color: Colors.black),
-                      contentPadding: EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.transparent,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: TextField(
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      hintText: 'Confirm Password ',
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(color: Colors.black),
-                      contentPadding: EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-              ),
+              _buildPasswordField('New Password', _passwordController, true),
+              _buildPasswordField('Confirm Password', _confirmPasswordController, true),
               Padding(
                 padding: EdgeInsets.only(right: 20.0, top: 8),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => ResetPassScreen(),
-                      ),
+                      MaterialPageRoute(builder: (context) => ResetPassScreen()),
                     );
                   },
                   child: Text(
@@ -287,16 +332,74 @@ class PrivacyScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _saveNewPassword,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                ),
+                child: Text(
+                  'Save Password',
+                  style: TextStyle(color: Colors.amberAccent),
+                ),
+              ),
             ],
           ),
         ],
       ),
     );
   }
+
+  Widget _buildPasswordField(String hint, TextEditingController controller, bool obscureText) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.transparent,
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+        child: TextField(
+          controller: controller,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            hintText: hint,
+            labelText: hint,
+            border: InputBorder.none,
+            hintStyle: TextStyle(color: Colors.black),
+            contentPadding: EdgeInsets.all(16),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class EditProfileScreen extends StatelessWidget {
+
+
+class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
+
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    _userNameController.text = prefs.getString('loggedInUserName') ?? '';
+    _emailController.text = prefs.getString('loggedInUserEmail') ?? '';
+    _mobileController.text = prefs.getString('loggedInUserMobile') ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -318,109 +421,40 @@ class EditProfileScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image(
-              image: AssetImage('assets/background.jpg'),
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
           ),
-
           Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.transparent,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Name',
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(color: Colors.black),
-                      contentPadding: EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'UserName',
-                      hintStyle: TextStyle(color: Colors.black),
-                      contentPadding: EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-              ),
+              _buildInputField('UserName', _userNameController),
               SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Mobile Number',
-                      hintStyle: TextStyle(color: Colors.black),
-                      contentPadding: EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-              ),
+              _buildInputField('Email', _emailController),
               SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Email',
-                      hintStyle: TextStyle(color: Colors.black),
-                      contentPadding: EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-              ),
-
+              _buildInputField('Mobile Number(Optional)', _mobileController),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                    ),
-                    child: Text(
-                      'Save',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amberAccent,
-                      ),
-                    ),
+              ElevatedButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('loggedInUserName', _userNameController.text);
+                  await prefs.setString('loggedInUserEmail', _emailController.text);
+                  await prefs.setString('loggedInUserMobile', _mobileController.text);
+
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Profile updated successfully')),
+                  );
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent),
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.amberAccent,
                   ),
-                ],
+                ),
               ),
             ],
           ),
@@ -428,7 +462,30 @@ class EditProfileScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildInputField(String hint, TextEditingController controller) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+        child: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            labelText: hint,
+            hintText: hint,
+            hintStyle: TextStyle(color: Colors.black),
+            contentPadding: EdgeInsets.all(16),
+          ),
+        ),
+      ),
+    );
+  }
 }
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -465,7 +522,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12.0),
             child: ListView(
               children: [
                 SwitchListTile(

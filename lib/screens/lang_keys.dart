@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:humoji_app/screens/home_screen.dart';
+import 'home_screen.dart'; // ✅ Import the file that contains EmojiHomeScreen & language classes
 
 class LanguageSelectionScreen extends StatelessWidget {
   final String userName;
+
   LanguageSelectionScreen({super.key, required this.userName});
 
   final List<Map<String, dynamic>> languages = [
-   
-    {'script': 'తె', 'name': 'తెలుగు', 'color': Colors.amber},
-    {'script': 'E', 'name': 'English', 'color': Colors.cyan},
-     {'script': 'ह', 'name': 'हिंदी', 'color': Colors.orange},
-    {'script': 'த', 'name': 'தமிழ்', 'color': Colors.brown},
+    {'script': 'తె', 'name': 'తెలుగు', 'color': Colors.amber, 'widget': const TeluguScreen()},
+    {'script': 'E', 'name': 'English', 'color': Colors.cyan, 'widget': const EnglishScreen()},
+    {'script': 'ह', 'name': 'हिंदी', 'color': Colors.orange, 'widget': const HindiScreen()},
+    {'script': 'த', 'name': 'தமிழ்', 'color': Colors.brown, 'widget': const TamilScreen()},
   ];
 
   @override
@@ -18,50 +18,55 @@ class LanguageSelectionScreen extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/background.jpg'),fit: BoxFit.cover)
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/background.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
           child: Scaffold(
-          backgroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
             body: Center(
-  child: Column(
-    mainAxisSize: MainAxisSize.max,
-  mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      SizedBox(height: 180,),
-      Text(
-        'Select Language',
-        style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold,color: const Color.fromARGB(255, 172, 17, 17)),
-      ),
-      SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Wrap(
-          spacing: 30,
-          runSpacing: 20,
-          alignment: WrapAlignment.center,
-          children: languages.map((lang) {
-            return LanguageButton(
-              script: lang['script'],
-              name: lang['name'],
-              borderColor: lang['color'],
-              onTap: () {
-                debugPrint(userName);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                     EmojiHomeScreen(selectedLanguage: lang['name']),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 180),
+                  const Text(
+                    'Select Language',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 172, 17, 17),
+                    ),
                   ),
-                );
-              },
-            );
-          }).toList(),
-        ),
-      ),
-    ],
-  ),
-),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Wrap(
+                      spacing: 30,
+                      runSpacing: 20,
+                      alignment: WrapAlignment.center,
+                      children: languages.map((lang) {
+                        return LanguageButton(
+                          script: lang['script'],
+                          name: lang['name'],
+                          borderColor: lang['color'],
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => lang['widget'],
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ],
@@ -87,12 +92,12 @@ class LanguageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 120,
-      margin: EdgeInsets.all(4),
+      margin: const EdgeInsets.all(4),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           MouseRegion(
-            cursor: SystemMouseCursors.click,
+            cursor: SystemMouseCursors.click, 
             child: GestureDetector(
               onTap: onTap,
               child: Column(
@@ -108,14 +113,13 @@ class LanguageButton extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Text(
                       script,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     name,
-                    style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
