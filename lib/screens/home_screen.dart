@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:device_preview/device_preview.dart';
 
 
 class EmojiHomeScreen extends StatefulWidget {
