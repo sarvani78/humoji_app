@@ -370,21 +370,40 @@ class EnglishScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, List<Map<String, String>>> englishEmojiSongMap = {
       loveEmojis: [
-        {'title': 'Perfect', 'subtitle': 'Ed Sheeran', 'path': 'assets/perfect.mp3'},
-        {'title': 'All of Me', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
-         {'title': 'love me like u do', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
-          {'title': 'dandelions', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
-           {'title': 'shape of u', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
+        {'title': 'i wanna be yours', 'subtitle': 'Arctic Monkeys', 'path': 'assets/english songs/i wanna be yours.mp3'},
+        {'title': 'dandelions', 'subtitle': 'Ruth B', 'path': 'assets/english sons/dandelions.mp3'},
+        {'title': 'SugarBrowines','subtitle': 'DHARIA','path': 'assets/english songs/SugarBrownies.mp3'},
+        {'title': 'Blue','subtitle': 'Eiffle 65','path': 'assets/english songs/Blue.mp3'},
+        {'title': 'Until I Found You','subtitle': 'Stephen Sanchez','path': 'assets/english songs/Until I Found You.mp3'},
+        {'title': 'Beautiful Things','subtitle': 'Benson Boone','path': 'assets/english songs/beautiful things.mp3'},
       ],
       sadEmojis: [
-        {'title': 'Someone Like You', 'subtitle': 'Adele', 'path': 'assets/someone_like_you.mp3'},
+        {'title': 'Moral Of The Story', 'subtitle': 'Adele', 'path': 'assets/english songs/moral of the story.mp3'},
+        {'title': 'little do you know','subtitle': 'Paul','path': 'assets/english songs/little do you know.mp3'},
+        {'title': 'Dancing With Your  Ghost','subtitle': 'Sasha Alex','path': 'assets/english songs/dancing with your ghost.mp3'},
+        {'title': 'Let Her Go','subtitle': 'Jasmine','path': 'assets/english songs/let her go.mp3'},
+        {'title': 'These Memories','subtitle': 'Hollow Cloves','path': 'assets/english songs/These Memories.mp3'},
       ],
       happyEmojis: [
-        {'title': 'Happy', 'subtitle': 'Pharrell Williams', 'path': 'assets/happy.mp3'},
-        {'title': 'Can’t Stop the Feeling', 'subtitle': 'Justin Timberlake', 'path': 'assets/cant_stop.mp3'},
+        {'title': 'Cheri Cheri Lady', 'subtitle': 'Modern Talkisng', 'path': 'assets/english songs/Cheri Cheri Lady.mp3'},
+        {'title': 'CheapThrills', 'subtitle': 'Justin Timberlake', 'path': 'assets/english songs/CheapThrills.mp3'},
+        {'title': 'Blue','subtitle': 'Eiffle 65','path': 'assets/english songs/Blue.mp3'},
+        {'title': 'Bones','subtitle': 'Imagine Dragons','path': 'assets/english songs/Bones.mp3'},
+        {'title': 'SugarBrowines','subtitle': 'DHARIA','path': 'assets/english songs/SugarBrownies.mp3'},
+      ],
+      retroEmojis: [
+        {'title': 'Pretty Little Baby','subtitle': 'Connie Francis','path': 'assets/english songs/prettyl little baby.mp3'},
+        {'title': 'Just What I Needed','subtitle': 'The Cars','path': 'assets/english songs/Just What I Needed.mp3'},
+        {'title': 'Thirteen','subtitle': 'Big Star','path': 'assets/english songs/Thirteen.mp3'},
+        {'title': 'She so High','subtitle': 'Tal Bachman','path': 'assets/english songs/She so High.mp3'},       
+      ],
+      itemEmojis: [
+         {'title': 'Leviating','subtitle': 'DHARIA','path': 'assets/english songs/Leviating.mp3'},
+         {'title': 'Unstoppable','subtitle': 'Sia','path': 'assets/english songs/Unstoppable.mp3'},
+         {'title': 'Espresso','subtitle': 'Lailaa','path': 'assets/english songs/espresso.mp3'},
+         {'title': 'Hips Dont Lie','subtitle': 'Wyclef jean','path': 'assets/english songs/Hips Dont Lie.mp3'},
       ],
     };
-
     return EmojiHomeScreen(
       selectedLanguage: 'Welcome..🙏',
       emojiSongMap: englishEmojiSongMap,
@@ -449,20 +468,48 @@ class TamilScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, List<Map<String, String>>> tamilEmojiSongMap = {
       loveEmojis: [
-        {'title': 'Munbe Vaa', 'subtitle': 'Shreya Ghoshal', 'path': 'assets/munbe_vaa.mp3'},
-        {'title': 'Enna Solla', 'subtitle': 'Shankar Mahadevan', 'path': 'assets/enna_solla.mp3'},
+        {'title': 'Aasa Kooda', 'subtitle': 'G.V. Prakash', 'path': 'assets/tamil songs/Aasa Kooda.mp3'},
+        {'title': 'Mundhinam', 'subtitle': 'Harris', 'path': 'assets/tamil songs/Mundhinam.mp3'},
+        {'title': 'Unnale', 'subtitle': 'Hariharan', 'path': 'assets/tamil songs/Unnale.mp3'},
+        {'title': 'Vaseegara', 'subtitle': 'Bombay Jayashree', 'path': 'assets/tamil songs/Vaseegara.mp3'},
+        {'title': 'Kadhal Sadugudu', 'subtitle': 'SPB', 'path': 'assets/tamil songs/Kadhal Sadugudu.mp3'},
+        {'title': 'En Kanmani', 'subtitle': 'S.P. Balasubrahmanyam', 'path': 'assets/tamil songs/En Kanmani.mp3'},
       ],
       sadEmojis: [
-        {'title': 'Vinnaithaandi Varuvaayaa', 'subtitle': 'Karthik', 'path': 'assets/vtv.mp3'},
+        {'title': 'Thanganiram', 'subtitle': 'Harris', 'path': 'assets/tamil songs/Thanganiram.mp3'},
+        {'title': 'Sugam Sugame', 'subtitle': 'Vijay Yesudas', 'path': 'assets/tamil songs/Sugam Sugame.mp3'},
+        {'title': 'Porkanda Singam', 'subtitle': 'D.Imman', 'path': 'assets/tamil songs/Porkanda Singam.mp3'},
+        {'title': 'Golden Sparrow', 'subtitle': 'Vijay Prakash', 'path': 'assets/tamil songs/Golden Sparrow.mp3'},
+        {'title': 'pottu Thotta Pournami', 'subtitle': 'A.R.Rahman', 'path': 'assets/tamil songs/pottu Thotta Pournami.mp3'},
       ],
       happyEmojis: [
-        {'title': 'Vaathi Coming', 'subtitle': 'Anirudh Ravichander', 'path': 'assets/vaathi_coming.mp3'},
-        {'title': 'Donu Donu Donu', 'subtitle': 'Anirudh & Neeti Mohan', 'path': 'assets/donu_donu.mp3'},
+        {'title': 'Aathangara Marame', 'subtitle': 'Yuvan Shankar Raja', 'path': 'assets/tamil songs/Aathangara Marame.mp3'},
+        {'title': 'Adipoli', 'subtitle': 'Vijay', 'path': 'assets/tamil songs/Adipoli.mp3'},
+        {'title': 'Balle Lakka', 'subtitle': 'Shreya Ghoshal', 'path': 'assets/tamil songs/Balle Lakka.mp3'},
+        {'title': 'Nee Singam Dhan', 'subtitle': 'Saabash', 'path': 'assets/tamil songs/Nee Singam Dhan.mp3'},
+        {'title': 'Thuli Thuli Mazhaiyaai', 'subtitle': 'Karthikeya', 'path': 'assets/tamil songs/Thuli Thuli Mazhaiyaai.mp3'},
       ],
+      itemEmojis: [
+        {'title': 'Daddy Mummy', 'subtitle': 'Kannan', 'path': 'assets/tamil songs/Daddy Mummy.mp3'},
+        {'title': 'Damakku Damakku', 'subtitle': 'Vijay Antony', 'path': 'assets/tamil songs/Damakku Damakku.mp3'},
+        {'title': 'Jalabulajangu', 'subtitle': 'Yuvan Shankar Raja', 'path': 'assets/tamil songs/Jalabulajangu.mp3'},
+        {'title': 'Jolly O Gymkhana', 'subtitle': 'Anirudh', 'path': 'assets/tamil songs/Jolly O Gymkhana.mp3'},
+        {'title': 'Kaavalaa', 'subtitle': 'Srikanth Deva', 'path': 'assets/tamil songs/Kaavalaa.mp3'},
+        {'title': 'Kacheri-Kacheri', 'subtitle': 'Priya Subramaniam', 'path': 'assets/tamil songs/Kacheri-Kacheri.mp3'},
+        {'title': 'Private Party', 'subtitle': 'Deva', 'path': 'assets/tamil songs/Private Party.mp3'},
+        {'title': 'Two Two Two', 'subtitle': 'Yuvan Shankar Raja', 'path': 'assets/tamil songs/Two Two Two.mp3'},
+        {'title': 'Yethi Yethi', 'subtitle': 'Supriya Joshi', 'path': 'assets/tamil songs/Yethi Yethi.mp3'},
+      ],
+      retroEmojis: [
+        {'title': 'Kadhal Sadugudu', 'subtitle': 'SPB', 'path': 'assets/tamil songs/Kadhal Sadugudu.mp3'},
+        {'title': 'En Kanmani', 'subtitle': 'S.P. Balasubrahmanyam', 'path': 'assets/tamil songs/En Kanmani.mp3'},
+        {'title': 'Nee Singam Dhan', 'subtitle': 'Retro Vibe', 'path': 'assets/tamil songs/Nee Singam Dhan.mp3'},
+        {'title': 'Thuli Thuli Mazhaiyaai', 'subtitle': 'Karthikeya', 'path': 'assets/tamil songs/Thuli Thuli Mazhaiyaai.mp3'},
+      ]
     };
 
     return EmojiHomeScreen(
-      selectedLanguage: 'வனக்கம்..🙏',
+      selectedLanguage: 'வணக்கம்..🙏',
       emojiSongMap: tamilEmojiSongMap,
     );
   }

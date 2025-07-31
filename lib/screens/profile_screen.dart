@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:humoji_app/screens/home_screen.dart';
 import 'package:humoji_app/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.transparent,
-                      foregroundImage: AssetImage('assets/profile.jpg'),
+                      foregroundImage: AssetImage('profile.jpg'),
                     ),
                     CircleAvatar(
                       radius: 16,
@@ -313,12 +314,12 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _saveNewPassword,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                ),
                 child: Text(
                   'Save Password',
                   style: TextStyle(color: Colors.amberAccent),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
                 ),
               ),
             ],
@@ -507,37 +508,64 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   value: isAutoPlay,
                   onChanged: (val) => setState(() => isAutoPlay = val),
                 ),
-                ListTile(
-                  title: Text('App Language'),
-                  subtitle: Text('Prefered App Language'),
-                  trailing: Icon(Icons.arrow_drop_down),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        title: Text('Select Language'),
-                        content: DropdownButton<String>(
-                          value: selectedLanguage,
-                          items: ['English', 'Hindi', 'Telugu', 'Tamil']
-                              .map(
-                                (lang) => DropdownMenuItem(
-                                  value: lang,
-                                  child: Text(lang),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (lang) {
-                            setState(() {
-                              selectedLanguage = lang ?? selectedLanguage;
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    );
-                  },
+               ListTile(
+  title: const Text('App Language'),
+  subtitle: const Text('Preferred App Language'),
+  trailing: const Icon(Icons.arrow_drop_down),
+  onTap: () {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Select Language'),
+        content: DropdownButton<String>(
+          value: selectedLanguage,
+          items: ['English', 'Hindi', 'Telugu', 'Tamil']
+              .map(
+                (lang) => DropdownMenuItem(
+                  value: lang,
+                  child: Text(lang),
                 ),
-                ListTile(
+              )
+              .toList(),
+          onChanged: (lang) {
+            if (lang != null) {
+              setState(() {
+                selectedLanguage = lang;
+              });
+              Navigator.pop(context); // Close the dialog first
+
+              // Then navigate based on language
+              Future.delayed(Duration(milliseconds: 300), () {
+                Widget targetScreen;
+
+                switch (lang) {
+                  case 'Telugu':
+                    targetScreen = const TeluguScreen();
+                    break;
+                  case 'Tamil':
+                    targetScreen = const TamilScreen();
+                    break;
+                  case 'Hindi':
+                    targetScreen = const HindiScreen();
+                    break;
+                  case 'English':
+                  default:
+                    targetScreen = const EnglishScreen();
+                }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => targetScreen),
+                );
+              });
+            }
+          },
+        ),
+      ),
+    );
+  },
+),
+             ListTile(
                   title: Text('Audio Quality'),
                   subtitle: Text('Streaming Quality'),
                   trailing: Icon(Icons.arrow_drop_down),
