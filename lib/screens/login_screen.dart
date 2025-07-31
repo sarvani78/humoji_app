@@ -12,7 +12,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   final TextEditingController _loginEmailController = TextEditingController();
-  final TextEditingController _loginPasswordController = TextEditingController();
+  final TextEditingController _loginPasswordController =
+      TextEditingController();
 
   Future<bool> validateUser(String email, String password) async {
     final prefs = await SharedPreferences.getInstance();
@@ -21,26 +22,32 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleLogin() async {
-  
     final emailOrPhone = _loginEmailController.text.trim();
     final password = _loginPasswordController.text.trim();
 
     bool isValid = await validateUser(emailOrPhone, password);
 
     if (isValid) {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('loggedInUserEmail', emailOrPhone); // this is used for updating password
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        'loggedInUserEmail',
+        emailOrPhone,
+      ); // this is used for updating password
 
-  Navigator.push(
-    // ignore: use_build_context_synchronously
-    context,
-    MaterialPageRoute(builder: (_) => LanguageSelectionScreen(userName: _loginEmailController.text)),
-  );
-}
- else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (_) =>
+                  LanguageSelectionScreen(userName: _loginEmailController.text),
+        ),
+      );
+    } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Invalid credentials. Please sign up first.")),
+        const SnackBar(
+          content: Text("Invalid credentials. Please sign up first."),
+        ),
       );
     }
   }
@@ -61,20 +68,23 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               width: double.infinity,
               height: screenHeight * 0.55,
-              padding:  EdgeInsets.all(30),
-              decoration:  BoxDecoration(
+              padding: EdgeInsets.all(30),
+              decoration: BoxDecoration(
                 color: Color.fromARGB(26, 254, 180, 120),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                     SizedBox(height: 10),
-                     Text('Login', style: TextStyle(color: Colors.black, fontSize: 35)),
-                     SizedBox(height: 20),
+                    SizedBox(height: 10),
+                    Text(
+                      'Login',
+                      style: TextStyle(color: Colors.black, fontSize: 35),
+                    ),
+                    SizedBox(height: 20),
                     TextField(
                       controller: _loginEmailController,
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                         hintText: 'Email or Mobile number',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -84,50 +94,57 @@ class _LoginScreenState extends State<LoginScreen> {
                         fillColor: Color(0xFFE8F0F2),
                       ),
                     ),
-                     SizedBox(height: 15),
+                    SizedBox(height: 15),
                     TextField(
                       controller: _loginPasswordController,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         hintText: 'Enter Password',
-                        border:  OutlineInputBorder(
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(40)),
                         ),
-                        prefixIcon:  Icon(Icons.lock),
+                        prefixIcon: Icon(Icons.lock),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                           ),
                           onPressed: () {
-                            setState(() => _obscurePassword = !_obscurePassword);
+                            setState(
+                              () => _obscurePassword = !_obscurePassword,
+                            );
                           },
                         ),
                         filled: true,
-                        fillColor:  Color(0xFFE8F0F2),
+                        fillColor: Color(0xFFE8F0F2),
                       ),
                     ),
-                     SizedBox(height: 25),
+                    SizedBox(height: 25),
                     SizedBox(
                       width: 150,
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:  Color.fromARGB(255, 248, 179, 89),
+                          backgroundColor: Color.fromARGB(255, 248, 179, 89),
                           foregroundColor: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                         onPressed: _handleLogin,
-                        child:  Text('Login', style: TextStyle(fontSize: 20, color: Colors.black)),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
                       ),
                     ),
-                     SizedBox(height: 40),
-                     Text("Don't have an account?"),
-                     SizedBox(height: 5),
+                    SizedBox(height: 40),
+                    Text("Don't have an account?"),
+                    SizedBox(height: 5),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:  Color.fromARGB(255, 248, 179, 89),
+                        backgroundColor: Color.fromARGB(255, 248, 179, 89),
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -135,13 +152,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           MaterialPageRoute(builder: (_) => const Signup()),
                         );
                       },
-                      child:  Text(
+                      child: Text(
                         'Sign up',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          
                         ),
                       ),
                     ),
@@ -168,17 +184,17 @@ class _SignupState extends State<Signup> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final bool _showLoginButton = false;
 
   Future<void> saveUser(String name, String email, String password) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(email, password); // existing
-  await prefs.setString('loggedInUserName', name); // new
-  await prefs.setString('loggedInUserEmail', email); // new
-}
-
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(email, password); // existing
+    await prefs.setString('loggedInUserName', name); // new
+    await prefs.setString('loggedInUserEmail', email); // new
+  }
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -198,22 +214,22 @@ class _SignupState extends State<Signup> {
     }
   }
 
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'assets/login.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/login.jpg', fit: BoxFit.cover),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              padding:  EdgeInsets.symmetric(horizontal: 35, vertical: 25),
-              decoration:  BoxDecoration(
+              padding: EdgeInsets.symmetric(horizontal: 35, vertical: 25),
+              decoration: BoxDecoration(
                 color: Color.fromARGB(26, 254, 180, 120),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
               ),
@@ -225,31 +241,43 @@ class _SignupState extends State<Signup> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                         Text(
+                        Text(
                           'Sign Up',
-                          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
-                         SizedBox(height: 20),
+                        SizedBox(height: 20),
                         TextFormField(
                           controller: _nameController,
-                          decoration:  InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'Enter User Name',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
                             ),
                             prefixIcon: Icon(Icons.person),
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                          validator: (value) => value!.isEmpty ? 'Please enter your name' : null,
+                          validator:
+                              (value) =>
+                                  value!.isEmpty
+                                      ? 'Please enter your name'
+                                      : null,
                         ),
-                         SizedBox(height: 12),
+                        SizedBox(height: 12),
                         TextFormField(
                           controller: _emailController,
-                          decoration:  InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'Enter Email or Mobile number',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
                             ),
                             prefixIcon: Icon(Icons.email),
                             filled: true,
@@ -261,7 +289,9 @@ class _SignupState extends State<Signup> {
                             }
 
                             bool isGmail = value.contains('@');
-                            bool isValidMobile = RegExp(r'^\d{10}$').hasMatch(value);
+                            bool isValidMobile = RegExp(
+                              r'^\d{10}$',
+                            ).hasMatch(value);
 
                             if (!isGmail && !isValidMobile) {
                               return 'Enter vaild Email or mobile number';
@@ -270,31 +300,65 @@ class _SignupState extends State<Signup> {
                             return null;
                           },
                         ),
-                         SizedBox(height: 12),
+                        SizedBox(height: 12),
                         TextFormField(
                           controller: _passwordController,
-                          obscureText: true,
-                          decoration:  InputDecoration(
+                          obscureText: _obscurePassword,
+                          decoration: InputDecoration(
                             hintText: 'Enter Password',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
                             ),
                             prefixIcon: Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                            ),
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                          validator: (value) => value!.isEmpty ? 'Please enter password' : null,
+                          validator:
+                              (value) =>
+                                  value!.isEmpty
+                                      ? 'Please enter password'
+                                      : null,
                         ),
-                         SizedBox(height: 12),
+
+                        SizedBox(height: 12),
                         TextFormField(
                           controller: _confirmPasswordController,
-                          obscureText: true,
-                          decoration:  InputDecoration(
+                          obscureText: _obscureConfirmPassword,
+                          decoration: InputDecoration(
                             hintText: 'Re-enter Password',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
                             ),
                             prefixIcon: Icon(Icons.lock_outline),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureConfirmPassword =
+                                      !_obscureConfirmPassword;
+                                });
+                              },
+                            ),
                             filled: true,
                             fillColor: Colors.white,
                           ),
@@ -307,28 +371,35 @@ class _SignupState extends State<Signup> {
                             return null;
                           },
                         ),
+
                         const SizedBox(height: 25),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                            backgroundColor:  Color.fromARGB(255, 248, 179, 89),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 12,
+                            ),
+                            backgroundColor: Color.fromARGB(255, 248, 179, 89),
                             foregroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                           onPressed: _submitForm,
-                          child:  Text(
+                          child: Text(
                             'Create Account',
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
                         if (_showLoginButton) ...[
-                           SizedBox(height: 25),
+                          SizedBox(height: 25),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                              backgroundColor:  Colors.pink[200],
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 10,
+                              ),
+                              backgroundColor: Colors.pink[200],
                               foregroundColor: Colors.black,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -337,7 +408,10 @@ class _SignupState extends State<Signup> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text('Login', style: TextStyle(fontSize: 25)),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(fontSize: 25),
+                            ),
                           ),
                         ],
                       ],

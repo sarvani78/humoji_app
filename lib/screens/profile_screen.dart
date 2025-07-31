@@ -90,12 +90,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: Text('Profile Settings',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Update and modify your profile'),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(),
-                    ),
-                  ),
+                  onTap: () async {
+                   await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                    );
+                    _loadUserDetails(); 
+                  },
+
                 ),
                 ListTile(
                   leading: Icon(Icons.lock),
@@ -135,12 +137,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
-                    await prefs.clear();
+                    await prefs.remove('currentLoggedInEmail');
+
                    Navigator.pushAndRemoveUntil(
-                     // ignore: use_build_context_synchronously
-                     context,
-                         MaterialPageRoute(builder: (context) => const LoginScreen()),
-                       (Route<dynamic> route) => false,
+                     context, MaterialPageRoute(builder: (context) => const LoginScreen()), (Route<dynamic> route) => false,
                       );
  
                   },
@@ -166,9 +166,9 @@ class ResetPassScreen extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.yellow, Colors.white],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          colors: [Colors.white, Colors.yellow],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
       ),
       child: Scaffold(
@@ -211,24 +211,7 @@ class ResetPassScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('OTP sent to ${phoneController.text}'),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow[600],
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text('Send OTP'),
-                ),
+                
               ],
             ),
           ),
@@ -237,11 +220,6 @@ class ResetPassScreen extends StatelessWidget {
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'reset_pass_screen.dart'; // Make sure this file exists
 
 class PrivacyScreen extends StatefulWidget {
   const PrivacyScreen({super.key});
@@ -323,7 +301,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                     );
                   },
                   child: Text(
-                    'Forgot Password?',
+                    '',
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
@@ -335,12 +313,12 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _saveNewPassword,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                ),
                 child: Text(
                   'Save Password',
                   style: TextStyle(color: Colors.amberAccent),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
                 ),
               ),
             ],
@@ -373,8 +351,6 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     );
   }
 }
-
-
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -442,7 +418,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   await prefs.setString('loggedInUserEmail', _emailController.text);
                   await prefs.setString('loggedInUserMobile', _mobileController.text);
 
-                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Profile updated successfully')),
                   );
@@ -485,7 +460,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
-
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

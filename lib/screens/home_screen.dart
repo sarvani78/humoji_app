@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'profile_screen.dart';
+import 'favorites_screen.dart';
+import 'package:humoji_app/models/song.dart';
+import 'package:humoji_app/global_state.dart';
 
 class EmojiHomeScreen extends StatefulWidget {
   final String selectedLanguage;
@@ -29,18 +32,18 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
   String? _currentlyPlayingPath;
   final String _message = '';
 
-  List<Map<String, String>> _currentSongList = [];
+  List<Song> _currentSongList = [];
 
-  void _playSong(String path) async {
-    if (_isPlaying && _currentlyPlayingPath == path) {
+  void _playSong(Song song) async {
+    if (_isPlaying && _currentlyPlayingPath == song.path) {
       await _audioPlayer.pause();
       setState(() => _isPlaying = false);
     } else {
       await _audioPlayer.stop();
-      await _audioPlayer.play(AssetSource(path.replaceFirst('assets/', '')));
+      await _audioPlayer.play(AssetSource(song.path.replaceFirst('assets/', '')));
       setState(() {
         _isPlaying = true;
-        _currentlyPlayingPath = path;
+        _currentlyPlayingPath = song.path;
       });
     }
   }
@@ -51,19 +54,25 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
   }
 
   void _handleEmojiInput(String emoji) {
-    List<Map<String, String>>? selectedSongs;
+    List<Map<String, String>>? selectedSongsMap;
 
     for (var entry in widget.emojiSongMap.entries) {
       if (entry.key.contains(emoji)) {
-        selectedSongs = entry.value;
+        selectedSongsMap = entry.value;
         break;
       }
     }
 
     setState(() {
       _currentEmoji = emoji;
-      showSongList = selectedSongs != null;
-      _currentSongList = selectedSongs ?? [];
+      showSongList = selectedSongsMap != null;
+      _currentSongList = selectedSongsMap?.map((song) {
+        return Song(
+          title: song['title']!,
+          subtitle: song['subtitle']!,
+          path: song['path']!,
+        );
+      }).toList() ?? [];
     });
   }
 
@@ -102,15 +111,14 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Language: ${widget.selectedLanguage}',
-                  style: const TextStyle(fontSize: 16, color: Colors.deepOrange),
+                  ' ${widget.selectedLanguage}',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.deepOrange,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Emoji in. Music out',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
-                ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
@@ -120,24 +128,22 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
                   ),
                   child: Row(
                     children: [
-  const Icon(Icons.search),
-  const SizedBox(width: 8),
-  // ✅ Show selected emoji here
-  Text(
-    _currentEmoji.isNotEmpty ? _currentEmoji : 'Search with emoji...',
-    style: const TextStyle(fontSize: 18, color: Colors.black54),
-  ),
-  const Spacer(),
-  IconButton(
-    icon: const Icon(Icons.clear, color: Colors.red),
-    onPressed: _clearInput,
-  ),
-  IconButton(
-    icon: const Icon(Icons.emoji_emotions, color: Colors.orange),
-    onPressed: () => setState(() => showEmojiPicker = !showEmojiPicker),
-  ),
-],
-
+                      const Icon(Icons.search),
+                      const SizedBox(width: 8),
+                      Text(
+                        _currentEmoji.isNotEmpty ? _currentEmoji : '',
+                        style: const TextStyle(fontSize: 18, color: Colors.black54),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.clear, color: Colors.red),
+                        onPressed: _clearInput,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.emoji_emotions, color: Colors.orange),
+                        onPressed: () => setState(() => showEmojiPicker = !showEmojiPicker),
+                      ),
+                    ],
                   ),
                 ),
                 if (_message.isNotEmpty)
@@ -166,11 +172,12 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
                   ),
                 const SizedBox(height: 10),
                 if (showSongList)
-                  Expanded(
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.33,
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.white.withOpacity(0.6),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: Colors.deepOrange, width: 2),
                       ),
@@ -178,18 +185,44 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
                         itemCount: _currentSongList.length,
                         itemBuilder: (context, index) {
                           final song = _currentSongList[index];
-                          final isCurrent = _currentlyPlayingPath == song['path'] && _isPlaying;
+                          final isCurrent = _currentlyPlayingPath == song.path && _isPlaying;
+                          final isFavorite = favoriteSongs.contains(song);
 
                           return ListTile(
                             leading: const Icon(Icons.music_note, color: Colors.orange),
-                            title: Text(song['title']!, style: const TextStyle(fontSize: 14, color: Colors.black)),
-                            subtitle: Text(song['subtitle']!, style: const TextStyle(fontSize: 12, color: Colors.black87)),
-                            trailing: IconButton(
-                              icon: Icon(
-                                isCurrent ? Icons.pause_circle_filled : Icons.play_arrow,
-                                color: Colors.deepOrange,
-                              ),
-                              onPressed: () => _playSong(song['path']!),
+                            title: Text(song.title,
+                                style: const TextStyle(fontSize: 14, color: Colors.black)),
+                            subtitle: Text(song.subtitle,
+                                style: const TextStyle(fontSize: 12, color: Colors.black87)),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    isCurrent
+                                        ? Icons.pause_circle_filled
+                                        : Icons.play_arrow,
+                                    color: Colors.deepOrange,
+                                  ),
+                                  onPressed: () => _playSong(song),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                                    color: isFavorite ? Colors.red : Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (isFavorite) {
+                                        favoriteSongs.remove(song);
+                                      } else {
+                                        favoriteSongs.add(song);
+                                      }
+                                      print('Favorites now: ${favoriteSongs.map((s) => s.title).toList()}');
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           );
                         },
@@ -235,9 +268,18 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: const Icon(Icons.favorite, size: 28, color: Colors.black87),
-                        onPressed: () {},
-                      ),
+  icon: const Icon(Icons.favorite, size: 28, color: Colors.black87),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const FavoritesScreen()),
+    ).then((_) {
+      
+      setState(() {});
+    });
+  },
+),
+
                       IconButton(
                         icon: const Icon(Icons.person_outline, size: 28, color: Colors.black87),
                         onPressed: () {
@@ -258,13 +300,11 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
     );
   }
 }
-
-const String loveEmojis = '😍🥰😘😚💋🫀🫂👩‍❤‍👨👩‍❤️‍👩💑👨‍❤️‍👨👩‍❤‍💋‍👨👩‍❤️‍💋‍👩💏👨‍❤️‍💋‍👨🩷❤🧡💛💛💚🩵💙💜🖤🩶🤍🤎❤‍🔥❣💕💞💓💗💖💘💝💟♥';
+const String loveEmojis = '❤🩷🧡💛💚💙🩵💜🤎🖤🩶🤍❤‍🔥❣💕💞💗💖💘💝💟💌😍😘🥰🤩😗😙🤩🤗🫠🫣🙈😽😻🫀🫦🫶🫰🎀💋♥🌹🌸🏵🌺🌻🌼🌷';
 const String sadEmojis = '🙃🙂😞😔😟😕🙁☹️😣😖😩😫🥺😢😭💔❤‍🩹😥😿😪😓';
-const String happyEmojis = '😀😃😄😆😎😋😜🥳';
-const String retroEmojis = '🎥📼🎬';
-const String itemEmojis = '💃🕺🪩';
-
+const String happyEmojis = '😀 😃 😄 😁 😆 😂 🤣 😊 😇😺 😸 😻 🥳 🤗 🙌 👏 ✨ 🎉';
+const String retroEmojis = '☎️ 📼 📻 📺 🕹️ 📷 📞💿 📀 📟 🧮 📠 🧾🧷 🧵 🧶 🎞️ 🧲';
+const String itemEmojis = '💃 🕺 🩰 👯 👯‍♀️ 👯‍♂️ 🪩 🎶 🎵 🎧 🥳 🎤 🎼 🎷 🪗 🥁 🪘 ✨';
 
 class TeluguScreen extends StatelessWidget {
   const TeluguScreen({super.key});
@@ -280,14 +320,14 @@ class TeluguScreen extends StatelessWidget {
       ],
       retroEmojis:[
         {'title':'taralirada','subtitle':'SPB','path': 'assets/telugu songs/taralirada.mp3'}
-        ],
+      ],
       itemEmojis: [
         {'title': 'dabidi dibidi', 'subtitle': 'Armaan Malik', 'path': 'assets/telugu songs/item.mp3'},
       ],
     };
 
     return EmojiHomeScreen(
-      selectedLanguage: 'తెలుగు',
+      selectedLanguage: 'నమస్కారం..🙏',
       emojiSongMap: teluguEmojiSongMap,
     );
   }
@@ -302,6 +342,9 @@ class EnglishScreen extends StatelessWidget {
       loveEmojis: [
         {'title': 'Perfect', 'subtitle': 'Ed Sheeran', 'path': 'assets/perfect.mp3'},
         {'title': 'All of Me', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
+         {'title': 'love me like u do', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
+          {'title': 'dandelions', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
+           {'title': 'shape of u', 'subtitle': 'John Legend', 'path': 'assets/all_of_me.mp3'},
       ],
       sadEmojis: [
         {'title': 'Someone Like You', 'subtitle': 'Adele', 'path': 'assets/someone_like_you.mp3'},
@@ -313,7 +356,7 @@ class EnglishScreen extends StatelessWidget {
     };
 
     return EmojiHomeScreen(
-      selectedLanguage: 'English',
+      selectedLanguage: 'Welcome..🙏',
       emojiSongMap: englishEmojiSongMap,
     );
   }
@@ -326,7 +369,7 @@ class HindiScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, List<Map<String, String>>> hindiEmojiSongMap = {
       loveEmojis: [
-        {'title': 'Heeriye', 'subtitle': 'Jubin Nautiyal', 'path': 'assets/heeriye.mp3'},
+        {'title': 'Heeriye', 'subtitle': 'Jubin Nautiyal', 'path': 'assets/hindi songs/Heeriye.mp3'},
         {'title': 'Raataan Lambiyan', 'subtitle': 'Jubin Nautiyal', 'path': 'assets/raataan.mp3'},
       ],
       sadEmojis: [
@@ -340,7 +383,7 @@ class HindiScreen extends StatelessWidget {
     };
 
     return EmojiHomeScreen(
-      selectedLanguage: 'हिंदी',
+      selectedLanguage: 'नमस्कार..🙏',
       emojiSongMap: hindiEmojiSongMap,
     );
   }
@@ -366,7 +409,7 @@ class TamilScreen extends StatelessWidget {
     };
 
     return EmojiHomeScreen(
-      selectedLanguage: 'தமிழ்',
+      selectedLanguage: 'வனக்கம்..🙏',
       emojiSongMap: tamilEmojiSongMap,
     );
   }

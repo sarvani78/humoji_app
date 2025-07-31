@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(16), // 👈 soft corners
+                    borderRadius: BorderRadius.circular(52), 
                     child: Image.asset(
                       'assets/Humoji logo.png',
                       width: 200,
