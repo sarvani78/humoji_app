@@ -300,7 +300,7 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
     );
   }
 }
-const String loveEmojis = '❤🩷🧡💛💚💙🩵💜🤎🖤🩶🤍❤‍🔥❣💕💞💗💖💘💝💟💌😍😘🥰🤩😗😙🤩🤗🫠🫣🙈😽😻🫀🫦🫶🫰🎀💋♥🌹🌸🏵🌺🌻🌼🌷';
+const String loveEmojis = '😍🥰😘😚💋🫀🫂👩‍❤‍👨👩‍❤️‍👩💑👨‍❤️‍👨👩‍❤‍💋‍👨👩‍❤️‍💋‍👩💏👨‍❤️‍💋‍👨🩷❤🧡💛💛💚🩵💙💜🖤🩶🤍🤎❤‍🩹❤‍🔥❣💕💞💓💗💖💘💝💟♥';
 const String sadEmojis = '🙃🙂😞😔😟😕🙁☹️😣😖😩😫🥺😢😭💔❤‍🩹😥😿😪😓';
 const String happyEmojis = '😀 😃 😄 😁 😆 😂 🤣 😊 😇😺 😸 😻 🥳 🤗 🙌 👏 ✨ 🎉';
 const String retroEmojis = '☎️ 📼 📻 📺 🕹️ 📷 📞💿 📀 📟 🧮 📠 🧾🧷 🧵 🧶 🎞️ 🧲';
@@ -313,16 +313,46 @@ class TeluguScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, List<Map<String, String>>> teluguEmojiSongMap = {
       loveEmojis: [
-        {'title': 'kola-kalle-ila', 'subtitle': 'Javed Ali', 'path': 'assets/telugu songs/Kola-Kalle-Ila.mp3'},
-      ],
+        {'title': 'kola-kalle-ila', 'subtitle': 'sidsriram', 'path': 'assets/telugu songs/Kola-Kalle-Ila.mp3'},
+        {'title': 'beautiful love', 'subtitle': 'src', 'path': 'assets/telugu songs/beautiful love.mp3'},
+        {'title': 'prema velluva', 'subtitle': 'arjith singh', 'path': 'assets/telugu songs/prema velluva.mp3'},
+        {'title': 'prema O prema', 'subtitle': 'SidSriram', 'path': 'assets/telugu songs/Prema_O_Prema.mp3'},
+        {'title': 'nene kaani nenai undaga', 'subtitle': 'Javed Ali', 'path': 'assets/telugu songs/sikindhar.mp3'},
+        {'title': 'yemito', 'subtitle': 'Hemachandra', 'path': 'assets/telugu songs/nuvve_leni_nenu.mp3'},
+  ],
       sadEmojis: [
-        {'title': 'Oosupodu', 'subtitle': 'Sid Sriram', 'path': 'assets/telugu songs/sad2.mp3'},
+        {'title': 'Bujji thalli', 'subtitle': 'Anurag', 'path': 'assets/telugu songs/bujji thalli.mp3'},
+        {'title': 'badhulu tochani', 'subtitle': 'Hemachandra', 'path': 'assets/telugu songs/badhulu tochani.mp3'},
+        {'title': 'aakasam lona', 'subtitle': 'sunitha', 'path': 'assets/telugu songs/aakasam lona.mp3'},
+        {'title': 'yemai poyave', 'subtitle': 'SidSriram', 'path': 'assets/telugu songs/yemai poyave.mp3'},
+        {'title': 'kuberaa', 'subtitle': 'DSP', 'path': 'assets/telugu songs/kuberaa.mp3'},
+        {'title': 'Oosupodu', 'subtitle': 'DSP', 'path': 'assets/telugu songs/oosupodu.mp3'},
       ],
       retroEmojis:[
-        {'title':'taralirada','subtitle':'SPB','path': 'assets/telugu songs/taralirada.mp3'}
+        {'title': 'andhalalo', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/andhalalo.mp3'},
+        {'title': 'maateraani', 'subtitle': 'SPB', 'path': 'assets/telugu songs/maaterani.mp3'},
+        {'title': 'vennelave vennelave', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/vennelave vennelave.mp3'},
+        {'title': 'priya priya', 'subtitle': 'sirivennela', 'path': 'assets/telugu songs/priya priya.mp3'},
+        {'title': 'pachani chilukalu', 'subtitle': 'SPB', 'path': 'assets/telugu songs/pachani chilukalu.mp3'},
+        {'title':'taralirada','subtitle':'SPB','path': 'assets/telugu songs/taralirada.mp3'},
+        {'title': 'jilibilipalukula', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/jilibili.mp3'},
+
+      ],
+      happyEmojis:[
+        {'title': 'Hoyna Hoyna', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/hoyna hoyna.mp3'},
+        {'title': 'O madhu', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/O madhu.mp3'},
+        {'title': 'gaallo thelinattundhe', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/gaallo.mp3'},
+       {'title': 'chitti', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/chitti.mp3'},
+       {'title': 'cinema chupistha mawa', 'subtitle': 'ilayaraja', 'path': 'assets/telugu songs/cinema.mp3'},
+
       ],
       itemEmojis: [
-        {'title': 'dabidi dibidi', 'subtitle': 'Armaan Malik', 'path': 'assets/telugu songs/item.mp3'},
+        {'title': 'dabidi dibidi', 'subtitle': 'thaman', 'path': 'assets/telugu songs/dabidi dibidi.mp3'},
+        {'title': 'ringa ringa', 'subtitle': 'DSP', 'path': 'assets/telugu songs/ringa ringa.mp3'},
+        {'title': 'bommali', 'subtitle': 'DSP', 'path': 'assets/telugu songs/bommali.mp3'},
+        {'title': 'swingzara', 'subtitle': 'Thaman', 'path': 'assets/telugu songs/swing zara.mp3'},
+        {'title': 'peelings', 'subtitle': 'DSP', 'path': 'assets/telugu songs/peelings.mp3'},
+        {'title': 'pakka local', 'subtitle': 'DSP', 'path': 'assets/telugu songs/pakka local.mp3'},
       ],
     };
 
@@ -368,19 +398,42 @@ class HindiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, List<Map<String, String>>> hindiEmojiSongMap = {
-      loveEmojis: [
-        {'title': 'Heeriye', 'subtitle': 'Jubin Nautiyal', 'path': 'assets/hindi songs/Heeriye.mp3'},
-        {'title': 'Raataan Lambiyan', 'subtitle': 'Jubin Nautiyal', 'path': 'assets/raataan.mp3'},
-      ],
-      sadEmojis: [
-        {'title': 'Tum Hi Ho', 'subtitle': 'Arijit Singh', 'path': 'assets/tum_hi_ho.mp3'},
-        {'title': 'Channa Mereya', 'subtitle': 'Arijit Singh', 'path': 'assets/channa_mereya.mp3'},
-      ],
-      happyEmojis: [
-        {'title': 'Kar Gayi Chull', 'subtitle': 'Badshah', 'path': 'assets/kar_gayi_chull.mp3'},
-        {'title': 'Tareefan', 'subtitle': 'Badshah', 'path': 'assets/tareefan.mp3'},
-      ],
-    };
+  loveEmojis: [
+    {'title': 'Heeriye', 'subtitle': 'Jubin Nautiyal', 'path': 'assets/hindi songs/Heeriye.mp3'},
+    {'title': 'Raataan Lambiyan', 'subtitle': 'Jubin Nautiyal', 'path': 'assets/raataan.mp3'},
+    {'title': 'Ik vaari aa', 'subtitle': '', 'path': 'assets/hindi songs/Ik vaari aa.mp3'},
+    {'title': 'Manwa Laage', 'subtitle': '', 'path': 'assets/hindi songs/ManwaLaage.mp3'},
+    {'title': 'Tere Bina', 'subtitle': '', 'path': 'assets/hindi songs/Tere_Bina.mp3'},
+  ],
+  sadEmojis: [
+    {'title': 'Tum Hi Ho', 'subtitle': 'Arijit Singh', 'path': 'assets/hindi songs/Tum Hi Ho.mp3'},
+    {'title': 'Channa Mereya', 'subtitle': 'Arijit Singh', 'path': 'assets/hindi songs/Channamereya.mp3'},
+    {'title': 'Hamari Adhuri Kahani', 'subtitle': '', 'path': 'assets/hindi songs/HamariAdhuriKahani.mp3'},
+    {'title': 'Matargashti', 'subtitle': '', 'path': 'assets/hindi songs/Matargashti.mp3'},
+    {'title': 'Main Rahoon Ya Na Rahoon', 'subtitle': '', 'path': 'assets/hindi songs/mainrahoon.mp3'},
+  ],
+  happyEmojis: [
+    {'title': 'Kar Gayi Chull', 'subtitle': 'Badshah', 'path': 'assets/kar_gayi_chull.mp3'},
+    {'title': 'Tareefan', 'subtitle': 'Badshah', 'path': 'assets/tareefan.mp3'},
+    {'title': 'Nachde Ne', 'subtitle': '', 'path': 'assets/hindi songs/Nachde Ne.mp3'},
+    {'title': 'Satranga', 'subtitle': '', 'path': 'assets/hindi songs/Satranga.mp3'},
+    {'title': 'Sawarlon', 'subtitle': '', 'path': 'assets/hindi songs/sawarlon.mp3'},
+  ],
+  retroEmojis: [
+    {'title': 'Aaj Ki Raat', 'subtitle': '', 'path': 'assets/hindi songs/Aaj Ki Raat.mp3'},
+    {'title': 'Bachna Ae Haseeno', 'subtitle': '', 'path': 'assets/hindi songs/BachnaAeHaseeno.mp3'},
+    {'title': 'Kajra Mohabbat Wala', 'subtitle': '', 'path': 'assets/hindi songs/Kajra Mohabbat Wala.mp3'},
+    {'title': 'Roop Tera Mastana', 'subtitle': '', 'path': 'assets/hindi songs/Roop Tera Mastana.mp3'},
+    {'title': 'Ye Raatein', 'subtitle': '', 'path': 'assets/hindi songs/Ye raatein.mp3'},
+  ],
+  itemEmojis: [
+    {'title': 'Chikni Chameli', 'subtitle': '', 'path': 'assets/hindi songs/Chikni Chameli.mp3'},
+    {'title': 'Fevicol Se', 'subtitle': '', 'path': 'assets/hindi songs/Fevicol Se.mp3'},
+    {'title': 'Tip Tip Barsa Paani', 'subtitle': '', 'path': 'assets/hindi songs/Tip Tip Barsa Paani.mp3'},
+    {'title': 'Teri Baaton Mein', 'subtitle': '', 'path': 'assets/hindi songs/Teri Baaton Mein.mp3'},
+    {'title': 'Ek Do Teen', 'subtitle': '', 'path': 'assets/hindi songs/ekdotheen.mp3'},
+  ],
+};
 
     return EmojiHomeScreen(
       selectedLanguage: 'नमस्कार..🙏',

@@ -38,61 +38,70 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-        title: const Text(
-          "Favorites",
-          style: TextStyle(color: Colors.white),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: favoriteSongs.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.favorite_border, size: 60, color: Colors.grey),
-                  SizedBox(height: 12),
-                  Text(
-                    "No favorites yet",
-                    style: TextStyle(fontSize: 18, color: Colors.black54),
-                  ),
-                ],
-              ),
-            )
-          : ListView.builder(
-              itemCount: favoriteSongs.length,
-              itemBuilder: (context, index) {
-                final song = favoriteSongs[index];
-                final isCurrent = _currentlyPlayingPath == song.path && _isPlaying;
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+    
+          Image.asset(
+            'assets/favscreen.jpg', 
+            fit: BoxFit.cover,
+          ),
 
-                return ListTile(
-                  leading: const Icon(Icons.music_note, color: Colors.orange),
-                  title: Text(song.title),
-                  subtitle: Text(song.subtitle),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          isCurrent ? Icons.pause_circle_filled : Icons.play_arrow,
-                          color: Colors.deepOrange,
+          
+          Container(
+            color: Colors.black.withOpacity(0.4),
+            child: favoriteSongs.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.favorite_border, size: 60, color: Colors.white70),
+                        SizedBox(height: 12),
+                        Text(
+                          "No favorites yet",
+                          style: TextStyle(fontSize: 18, color: Colors.white70),
                         ),
-                        onPressed: () => _playOrPauseSong(song),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                          setState(() {
-                            favoriteSongs.remove(song);
-                          });
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.only(top: 60),
+                    itemCount: favoriteSongs.length,
+                    itemBuilder: (context, index) {
+                      final song = favoriteSongs[index];
+                      final isCurrent = _currentlyPlayingPath == song.path && _isPlaying;
+
+                      return ListTile(
+                        leading: const Icon(Icons.music_note, color: Colors.orangeAccent),
+                        title: Text(song.title, style: const TextStyle(color: Colors.white)),
+                        subtitle: Text(song.subtitle, style: const TextStyle(color: Colors.white70)),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                isCurrent ? Icons.pause_circle_filled : Icons.play_arrow,
+                                color: Colors.white,
+                              ),
+                              onPressed: () => _playOrPauseSong(song),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.white),
+                              onPressed: () {
+                                setState(() {
+                                  favoriteSongs.remove(song);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
+          ),
+        ],
+      ),
     );
   }
 }
