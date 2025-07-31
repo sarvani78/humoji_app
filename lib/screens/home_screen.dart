@@ -3,7 +3,6 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'profile_screen.dart';
 
-// EmojiHomeScreen (Generic with dynamic emoji-song mapping)
 class EmojiHomeScreen extends StatefulWidget {
   final String selectedLanguage;
   final Map<String, List<Map<String, String>>> emojiSongMap;
@@ -121,18 +120,24 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.search),
-                      const SizedBox(width: 8),
-                     Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.red),
-                        onPressed: _clearInput,
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.emoji_emotions, color: Colors.orange),
-                        onPressed: () => setState(() => showEmojiPicker = !showEmojiPicker),
-                      ),
-                    ],
+  const Icon(Icons.search),
+  const SizedBox(width: 8),
+  // ✅ Show selected emoji here
+  Text(
+    _currentEmoji.isNotEmpty ? _currentEmoji : 'Search with emoji...',
+    style: const TextStyle(fontSize: 18, color: Colors.black54),
+  ),
+  const Spacer(),
+  IconButton(
+    icon: const Icon(Icons.clear, color: Colors.red),
+    onPressed: _clearInput,
+  ),
+  IconButton(
+    icon: const Icon(Icons.emoji_emotions, color: Colors.orange),
+    onPressed: () => setState(() => showEmojiPicker = !showEmojiPicker),
+  ),
+],
+
                   ),
                 ),
                 if (_message.isNotEmpty)
@@ -254,8 +259,8 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
   }
 }
 
-const String loveEmojis = '❤🩷💖😍😘💘💝💕🌹';
-const String sadEmojis = '😢😭😿💔😔🥺';
+const String loveEmojis = '😍🥰😘😚💋🫀🫂👩‍❤‍👨👩‍❤️‍👩💑👨‍❤️‍👨👩‍❤‍💋‍👨👩‍❤️‍💋‍👩💏👨‍❤️‍💋‍👨🩷❤🧡💛💛💚🩵💙💜🖤🩶🤍🤎❤‍🔥❣💕💞💓💗💖💘💝💟♥';
+const String sadEmojis = '🙃🙂😞😔😟😕🙁☹️😣😖😩😫🥺😢😭💔❤‍🩹😥😿😪😓';
 const String happyEmojis = '😀😃😄😆😎😋😜🥳';
 const String retroEmojis = '🎥📼🎬';
 const String itemEmojis = '💃🕺🪩';
@@ -268,13 +273,16 @@ class TeluguScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, List<Map<String, String>>> teluguEmojiSongMap = {
       loveEmojis: [
-        {'title': 'Taralirada', 'subtitle': 'Javed Ali', 'path': 'assets/taralirada.mp3'},
+        {'title': 'kola-kalle-ila', 'subtitle': 'Javed Ali', 'path': 'assets/telugu songs/Kola-Kalle-Ila.mp3'},
       ],
       sadEmojis: [
-        {'title': 'Em Sandeham', 'subtitle': 'Sid Sriram', 'path': 'assets/em_sandeham.mp3'},
+        {'title': 'Oosupodu', 'subtitle': 'Sid Sriram', 'path': 'assets/telugu songs/sad2.mp3'},
       ],
+      retroEmojis:[
+        {'title':'taralirada','subtitle':'SPB','path': 'assets/telugu songs/taralirada.mp3'}
+        ],
       itemEmojis: [
-        {'title': 'dabidi dibidi', 'subtitle': 'Armaan Malik', 'path': 'assets/item.mp3'},
+        {'title': 'dabidi dibidi', 'subtitle': 'Armaan Malik', 'path': 'assets/telugu songs/item.mp3'},
       ],
     };
 
