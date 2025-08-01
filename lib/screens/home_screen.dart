@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:humoji_app/screens/song_player_screen.dart';
 import 'profile_screen.dart';
 import 'favorites_screen.dart';
 import 'package:humoji_app/models/song.dart';
@@ -53,28 +54,48 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
     _handleEmojiInput(emoji.emoji);
   }
 
-  void _handleEmojiInput(String emoji) {
-    List<Map<String, String>>? selectedSongsMap;
+  void _handleEmojiInput(String emoji) async {
+  List<Map<String, String>>? selectedSongsMap;
 
-    for (var entry in widget.emojiSongMap.entries) {
-      if (entry.key.contains(emoji)) {
-        selectedSongsMap = entry.value;
-        break;
-      }
+  for (var entry in widget.emojiSongMap.entries) {
+    if (entry.key.contains(emoji)) {
+      selectedSongsMap = entry.value;
+      break;
     }
+  }
 
+  if (selectedSongsMap == null) {
+    final allSongs = widget.emojiSongMap.values.expand((list) => list).toList();
+    allSongs.shuffle();
+    selectedSongsMap = allSongs.take(5).toList();
+
+    // Play a random song automatically
+    final randomSong = selectedSongsMap[0];
+    final song = Song(
+      title: randomSong['title']!,
+      subtitle: randomSong['subtitle']!,
+      path: randomSong['path']!,
+    );
+    await _audioPlayer.stop();
+    await _audioPlayer.play(AssetSource(song.path.replaceFirst('assets/', '')));
     setState(() {
-      _currentEmoji = emoji;
-      showSongList = selectedSongsMap != null;
-      _currentSongList = selectedSongsMap?.map((song) {
-        return Song(
-          title: song['title']!,
-          subtitle: song['subtitle']!,
-          path: song['path']!,
-        );
-      }).toList() ?? [];
+      _isPlaying = true;
+      _currentlyPlayingPath = song.path;
     });
   }
+
+  setState(() {
+    _currentEmoji = emoji;
+    showSongList = selectedSongsMap != null;
+    _currentSongList = selectedSongsMap!.map((song) {
+      return Song(
+        title: song['title']!,
+        subtitle: song['subtitle']!,
+        path: song['path']!,
+      );
+    }).toList();
+  });
+}
 
   void _clearInput() {
     _controller.clear();
@@ -197,15 +218,20 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                IconButton(
-                                  icon: Icon(
-                                    isCurrent
-                                        ? Icons.pause_circle_filled
-                                        : Icons.play_arrow,
-                                    color: Colors.deepOrange,
-                                  ),
-                                  onPressed: () => _playSong(song),
-                                ),
+                               IconButton(
+  icon: Icon(
+    isCurrent ? Icons.pause_circle_filled : Icons.play_arrow,
+    color: Colors.deepOrange,
+  ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SongPlayerScreen(song: song),
+      ),
+    );
+  },
+),
                                 IconButton(
                                   icon: Icon(
                                     isFavorite ? Icons.favorite : Icons.favorite_border,
