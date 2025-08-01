@@ -458,8 +458,8 @@ class HindiScreen extends StatelessWidget {
     {'title': 'Main Rahoon Ya Na Rahoon', 'subtitle': '', 'path': 'assets/hindi songs/mainrahoon.mp3'},
   ],
   happyEmojis: [
-    {'title': 'Kar Gayi Chull', 'subtitle': 'Badshah', 'path': 'assets/kar_gayi_chull.mp3'},
-    {'title': 'Tareefan', 'subtitle': 'Badshah', 'path': 'assets/tareefan.mp3'},
+    {'title': 'Kajra Mohabat vaala', 'subtitle': 'Badshah', 'path': 'assets/kajra Mohabbat Wala.mp3'},
+    {'title': 'Tere_Bina', 'subtitle': 'Badshah', 'path': 'assets/Tere_Bina.mp3'},
     {'title': 'Nachde Ne', 'subtitle': '', 'path': 'assets/hindi songs/Nachde Ne.mp3'},
     {'title': 'Satranga', 'subtitle': '', 'path': 'assets/hindi songs/Satranga.mp3'},
     {'title': 'Sawarlon', 'subtitle': '', 'path': 'assets/hindi songs/sawarlon.mp3'},

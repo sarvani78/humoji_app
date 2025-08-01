@@ -90,26 +90,25 @@ class _SongPlayerScreenState extends State<SongPlayerScreen> {
 
     
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
                   const SizedBox(height: 60),
-                  const Icon(Icons.music_note, size: 120, color: Colors.white),
+                  const Icon(Icons.music_note, size: 120, color: Colors.deepOrange),
                   const SizedBox(height: 20),
                   Text(
                     widget.song.title,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                   Text(
                     widget.song.subtitle,
                     style: const TextStyle(
                       fontSize: 18,
-                      color: Colors.white70,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -125,7 +124,7 @@ class _SongPlayerScreenState extends State<SongPlayerScreen> {
                           ? totalDuration.inSeconds.toDouble()
                           : 1,
                       onChanged: (value) => _seekTo(value),
-                      activeColor: Colors.white,
+                      activeColor: Colors.deepOrange,
                       inactiveColor: Colors.white30,
                     ),
                     Row(
@@ -133,22 +132,22 @@ class _SongPlayerScreenState extends State<SongPlayerScreen> {
                       children: [
                         Text(
                           _formatTime(currentPosition),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.black),
                         ),
                         Text(
                           _formatTime(totalDuration),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     IconButton(
                       icon: Icon(
                         isPlaying
                             ? Icons.pause_circle_filled
                             : Icons.play_circle_fill,
                         size: 80,
-                        color: Colors.white,
+                        color: Colors.deepOrange,
                       ),
                       onPressed: _togglePlayPause,
                     ),
