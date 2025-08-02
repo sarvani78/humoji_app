@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.transparent,
-                      foregroundImage: AssetImage('profile.jpg'),
+                      foregroundImage: AssetImage('assets/profile.jpg',),
                     ),
                     CircleAvatar(
                       radius: 16,
@@ -251,7 +251,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     final email = prefs.getString('loggedInUserEmail');
 
     if (email != null) {
-      await prefs.setString(email, newPassword); // Save new password for the email
+      await prefs.setString(email, newPassword); 
       _showMessage('Password updated successfully');
     } else {
       _showMessage('User email not found. Please log in again.');
@@ -267,21 +267,16 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, Colors.yellow],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        title: Text(
-          'Privacy',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-        centerTitle: true,
+       extendBodyBehindAppBar: true,
+  appBar: AppBar(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    centerTitle: true,
+    title: const Text(
+      '',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    ),
+        
       ),
       body: Stack(
         children: [
@@ -289,7 +284,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
             child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
           ),
           Column(
+            
             children: [
+              const SizedBox(height: 100,),
               _buildPasswordField('New Password', _passwordController, true),
               _buildPasswordField('Confirm Password', _confirmPasswordController, true),
               Padding(
@@ -382,30 +379,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, Colors.yellow],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        title: Text(
-          'Edit Profile',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
+     extendBodyBehindAppBar: true,
+  appBar: AppBar(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    centerTitle: true,
+    title: const Text(
+      '',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    ),),
       body: Stack(
         children: [
+          
           Positioned.fill(
             child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
           ),
           Column(
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 100),
               _buildInputField('UserName', _userNameController),
               SizedBox(height: 16),
               _buildInputField('Email', _emailController),
@@ -476,18 +467,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, Colors.yellow],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        title: Text('Settings'),
-      ),
+      extendBodyBehindAppBar: true,
+  appBar: AppBar(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    centerTitle: true,
+    title: const Text(
+      '',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    ),),
       body: Stack(
         children: [
           Positioned.fill(
@@ -495,7 +483,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               image: AssetImage('assets/background.jpg'),
               fit: BoxFit.cover,
             ),
-          ),
+          ),SizedBox(height: 100,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12.0),
             child: ListView(
@@ -532,9 +520,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 selectedLanguage = lang;
               });
-              Navigator.pop(context); // Close the dialog first
-
-              // Then navigate based on language
+              Navigator.pop(context); 
               Future.delayed(Duration(milliseconds: 300), () {
                 Widget targetScreen;
 
@@ -610,18 +596,16 @@ class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, Colors.yellow],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        title: Text('About Us'),
-      ),
+       extendBodyBehindAppBar: true,
+  appBar: AppBar(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    centerTitle: true,
+    title: const Text(
+      '',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    ),),
+  
       body: Stack(
         children: [
           Positioned.fill(
@@ -632,8 +616,10 @@ class AboutUsScreen extends StatelessWidget {
           ),
           Column(
             children: [
+             const SizedBox(height: 100,),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+              
                 child: Text(
                   'We are a dedicated team of developers focused on building inclusive mobile apps for everyone.\n\n'
                   'Our mission is to empower users through simple, elegant, and responsive design.\n\n'
@@ -652,6 +638,6 @@ class AboutUsScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+        );
   }
 }
