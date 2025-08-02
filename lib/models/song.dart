@@ -2,11 +2,13 @@ class Song {
   final String title;
   final String subtitle;
   final String path;
+  
 
-  Song({
+  Song( {
     required this.title,
     required this.subtitle,
     required this.path,
+  
   });
 
   // Optional: helpful for comparison

@@ -191,9 +191,9 @@ class _SignupState extends State<Signup> {
 
   Future<void> saveUser(String name, String email, String password) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(email, password); // existing
-    await prefs.setString('loggedInUserName', name); // new
-    await prefs.setString('loggedInUserEmail', email); // new
+    await prefs.setString(email, password); 
+    await prefs.setString('loggedInUserName', name); 
+    await prefs.setString('loggedInUserEmail', email); 
   }
 
   void _submitForm() async {
@@ -203,7 +203,6 @@ class _SignupState extends State<Signup> {
 
       await saveUser(_nameController.text.trim(), emailOrPhone, password);
 
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Account created! You can login now.")),
       );
