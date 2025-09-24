@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString(
         'loggedInUserEmail',
         emailOrPhone,
-      ); // this is used for updating password
+      ); 
 
       Navigator.push(
         context,
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     } else {
-      // ignore: use_build_context_synchronously
+    
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Invalid credentials. Please sign up first."),

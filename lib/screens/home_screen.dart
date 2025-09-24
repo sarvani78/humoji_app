@@ -58,50 +58,35 @@ class _EmojiHomeScreenState extends State<EmojiHomeScreen> {
   }
 
   void _handleEmojiInput(String emoji) async {
-    List<Map<String, String>>? selectedSongsMap;
+  List<Map<String, String>>? selectedSongsMap;
 
-    for (var entry in widget.emojiSongMap.entries) {
-      if (entry.key.contains(emoji)) {
-        selectedSongsMap = entry.value;
-        break;
-      }
+  for (var entry in widget.emojiSongMap.entries) {
+    if (entry.key.contains(emoji)) {
+      selectedSongsMap = entry.value;
+      break;
     }
-
-    if (selectedSongsMap == null) {
-      final allSongs =
-          widget.emojiSongMap.values.expand((list) => list).toList();
-      allSongs.shuffle();
-      selectedSongsMap = allSongs.take(5).toList();
-
-      final randomSong = selectedSongsMap[0];
-      final song = Song(
-        title: randomSong['title']!,
-        subtitle: randomSong['subtitle']!,
-        path: randomSong['path']!, 
-      );
-      await _audioPlayer.stop();
-      await _audioPlayer.play(
-        AssetSource(song.path.replaceFirst('assets/', '')),
-      );
-      setState(() {
-        _isPlaying = true;
-        _currentlyPlayingPath = song.path;
-      });
-    }
-
-    setState(() {
-      _currentEmoji = emoji;
-      showSongList = selectedSongsMap != null;
-      _currentSongList =
-          selectedSongsMap!.map((song) {
-            return Song(
-              title: song['title']!,
-              subtitle: song['subtitle']!,
-              path: song['path']!, 
-            );
-          }).toList();
-    });
   }
+
+  if (selectedSongsMap == null) {
+    final allSongs = widget.emojiSongMap.values.expand((list) => list).toList();
+    allSongs.shuffle();
+    selectedSongsMap = allSongs.take(5).toList(); // Just pick a few random songs
+  }
+
+  setState(() {
+    _currentEmoji = emoji;
+    showSongList = true;
+    _currentSongList = selectedSongsMap!.map((song) {
+      return Song(
+        title: song['title']!,
+        subtitle: song['subtitle']!,
+        path: song['path']!,
+      );
+    }).toList();
+    _isPlaying = false;
+    _currentlyPlayingPath = null;
+  });
+}
 
   void _clearInput() {
     _controller.clear();

@@ -28,6 +28,14 @@ class _VoiceAssistantScreenState extends State<VoiceAssistantScreen> {
     _speech = stt.SpeechToText();
   }
 
+  @override
+  void dispose() {
+    _audioPlayer.stop(); // Stop the audio if playing
+    _audioPlayer.dispose(); // Optional: release resources
+    _speech.stop(); // Stop listening if still running
+    super.dispose();
+  }
+
   void _startListening() async {
     bool available = await _speech.initialize(
       onStatus: (status) => print('Speech status: $status'),
